@@ -1,5 +1,7 @@
 function showCourses(){
-    fetch("http://localhost:8080/courses")
+    fetch("http://localhost:8080/courses", {
+                                                 credentials: "include"
+                                             })
     .then((response) => response.json())
     .then((courses) => {
         const dataTable = document.getElementById("coursetable")
@@ -16,21 +18,31 @@ function showCourses(){
         });
     });
 }
-
 function showEnrolledStudents(){
-    fetch("http://localhost:8080/courses/enrolled")
-    .then((response) => response.json()) 
+    fetch("http://localhost:8080/courses/enrolled", {
+        credentials: "include"
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Unauthorized");
+        }
+        return response.json();
+    })
     .then((students) => {
-        const dataTable = document.getElementById("enrolledtable")
+        const dataTable = document.getElementById("enrolledtable");
 
         students.forEach(student => {
             var row = `<tr>
             <td>${student.name}</td>
             <td>${student.emailid}</td>
             <td>${student.courseName}</td>
-            </tr>`
+            </tr>`;
 
-            dataTable.innerHTML+=row;
+            dataTable.innerHTML += row;
         });
+    })
+    .catch(err => {
+        alert("Access denied. Please login.");
+        window.location.href = "login.html";
     });
 }

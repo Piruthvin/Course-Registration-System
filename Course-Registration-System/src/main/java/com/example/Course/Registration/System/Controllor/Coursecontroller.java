@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "http://localhost:63342")
 public class Coursecontroller {
 
     @Autowired
@@ -18,6 +18,7 @@ public class Coursecontroller {
     public List<Course> availablercourse(){
         return courseservice.availablecourses();
     }
+
 
     @GetMapping("/courses/enrolled")
     public List<CourseRegistry> enrolledStudents(){
@@ -30,5 +31,10 @@ public class Coursecontroller {
                                  @RequestParam("courseName") String courseName){
         courseservice.enrollcourse(name,emailid,courseName);
         return "Congratulations ! "+name+"Your Enrolled Sucessfully for "+courseName;
+    }
+
+    @GetMapping("/")
+    public String home(){
+        return "Home-Page";
     }
 }
